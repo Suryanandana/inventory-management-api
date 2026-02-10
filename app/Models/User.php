@@ -26,6 +26,7 @@ class User extends Authenticatable
         'role',
         'phone',
         'is_active',
+        'email_verified_at',
     ];
 
     /**
@@ -49,5 +50,10 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function emailVerificationCodes()
+    {
+        return $this->hasMany(EmailVerificationCode::class);
     }
 }
