@@ -6,12 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Resources\UserResource;
+use App\Mail\VerifyEmailOtpMail;
 use App\Models\User;
 use App\Services\OtpService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\EmailVerificationOtp;
 
 class AuthController extends Controller
 {
@@ -60,7 +60,7 @@ class AuthController extends Controller
 
         // kirim email nanti (step berikut)
         Mail::to($user->email)->queue(
-            new EmailVerificationOtp($code)
+            new VerifyEmailOtpMail($code)
         );
 
         return response()->json([
@@ -86,6 +86,40 @@ class AuthController extends Controller
 
         return response()->json([
             'message' => 'Email verified successfully',
+        ]);
+    }
+
+    public function resendVerification(Request $request, OtpService $otpService)
+    {
+        $request->validate([
+            'email' => 'required|email',
+        ]);
+
+        $user = User::where('email', $request->email)->firstOrFail();
+
+        if (! $otpService->canResend($user)) {
+            return response()->json([
+                'message' => 'Please wait before requesting another code',
+            ], 429);
+        }
+
+        if ($user->email_verified_at) {
+            return response()->json([
+                'message' => 'Email already verified',
+            ], 400);
+        }
+
+        // hapus otp lama
+        $otpService->clear($user);
+
+        // generate otp baru
+        $code = $otpService->generateFor($user);
+
+        // kirim email
+        Mail::to($user->email)->send(new VerifyEmailOtpMail($code));
+
+        return response()->json([
+            'message' => 'Verification code resent successfully',
         ]);
     }
 

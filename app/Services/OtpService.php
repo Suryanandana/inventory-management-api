@@ -1,9 +1,9 @@
 <?php
+
 namespace App\Services;
 
 use App\Models\EmailVerificationCode;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 
 class OtpService
 {
@@ -40,5 +40,16 @@ class OtpService
     public function clear($user)
     {
         EmailVerificationCode::where('user_id', $user->id)->delete();
+    }
+
+    public function canResend($user): bool
+    {
+        $record = EmailVerificationCode::where('user_id', $user->id)->first();
+
+        if (! $record) {
+            return true;
+        }
+
+        return $record->created_at->diffInSeconds(now()) > 30;
     }
 }
