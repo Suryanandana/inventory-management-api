@@ -1,0 +1,11 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.example.inventory_management",
+      "sha256_cert_fingerprints":
+      ["C9:91:B3:5B:04:EE:CF:A8:92:98:A9:54:3C:23:47:3B:BF:6C:F2:0D:BA:3D:0A:E6:5A:AB:17:5E:A8:12:F4:9D"]
+    }
+  }
+]
