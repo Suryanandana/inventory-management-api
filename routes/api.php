@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\ProductController;
 use Illuminate\Support\Facades\Route;
 
 // authentication
@@ -14,3 +15,7 @@ Route::post('/forgot-password', [AuthController::class, 'sendResetLink'])->middl
 Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('auth.reset-password');
 
 Route::get('/user', [AuthController::class, 'me'])->name('user')->middleware(['auth:sanctum', 'verified']);
+
+Route::get('/products', [ProductController::class, 'index']);
+Route::get('/products/{slug}', [ProductController::class, 'show'])->name('products.show')->middleware(['auth:sanctum', 'verified']);
+Route::post('/products', [ProductController::class, 'store']);
