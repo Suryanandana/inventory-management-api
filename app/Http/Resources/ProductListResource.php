@@ -17,6 +17,7 @@ class ProductListResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'slug' => $this->slug,
             'price' => $this->price,
             'image' => $this->images
                 ->where('is_primary', true)
