@@ -68,6 +68,8 @@ class PaymentService
                 'amount' => $amount,
                 'currency' => 'IDR',
                 'status' => 'PENDING',
+                'invoice_url' => $xenditResponse->getInvoiceUrl(),
+                'expired_date' => $xenditResponse->getExpiryDate(),
                 'xendit_response' => json_decode(json_encode($xenditResponse), true),
             ]);
 

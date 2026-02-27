@@ -20,10 +20,13 @@ class Payment extends Model
         'currency',
         'status',
         'xendit_response',
+        'invoice_url',
+        'expired_date',
     ];
 
     protected $casts = [
         'xendit_response' => 'array',
+        'expired_date' => 'datetime',
     ];
 
     public function user()

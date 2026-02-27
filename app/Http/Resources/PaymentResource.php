@@ -20,6 +20,8 @@ class PaymentResource extends JsonResource
             'amount' => $this->amount,
             'currency' => $this->currency,
             'status' => $this->status,
+            'invoice_url' => $this->invoice_url,
+            'expired_date' => $this->expired_date,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
